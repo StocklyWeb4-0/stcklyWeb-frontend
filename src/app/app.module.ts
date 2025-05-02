@@ -26,6 +26,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select'; 
 import { MatOptionModule } from '@angular/material/core'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar'; 
+import { MatCardModule } from '@angular/material/card'; // Añadir esta línea
 
 @NgModule({
   declarations: [
@@ -50,9 +51,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatSelectModule,     
-    MatOptionModule ,
-    MatSnackBarModule,     
+    MatSelectModule,
+    MatOptionModule,
+    MatSnackBarModule,
+    MatCardModule // Añadir esta línea
   ],
   providers: [],
   bootstrap: [AppComponent]

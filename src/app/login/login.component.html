@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Iniciar Sesión en StocklyWeb</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput formControlName="correo" type="email" placeholder="Ingresa tu correo electronico">
+          <mat-error *ngIf="loginForm.get('correo')?.hasError('required')">
+            El correo es obligatorio.
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('correo')?.hasError('email')">
+            Por favor, introduce un correo válido.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="contrasena" [type]="hidePassword ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('contrasena')?.hasError('required')">
+            La contraseña es obligatoria.
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="full-width login-button">
+          Ingresar
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="start">
+      <!-- Podrías añadir enlaces como "¿Olvidaste tu contraseña?" aquí -->
+    </mat-card-actions>
+  </mat-card>
+</div>
