@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductosComponent } from './productos/productos.component';
+import { VentaComponent } from './components/venta/venta.component';
 import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
@@ -17,7 +18,13 @@ const routes: Routes = [
     component: ProductosComponent,
     canActivate: [authGuard]
   },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  {
+    path: 'venta',
+    component: VentaComponent,
+    canActivate: [authGuard]
+  },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' } // ruta comodín opcional
 ];
 
 @NgModule({

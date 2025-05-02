@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <h2>Resumen de la Venta</h2>
+    <div *ngIf="resumenVenta">
+      <p><strong>ID Venta:</strong> {{ resumenVenta.id }}</p>
+      <p><strong>Total:</strong> {{ resumenVenta.total | currency }}</p>
+      <p><strong>Productos:</strong></p>
+      <ul>
+        <li *ngFor="let item of resumenVenta.items">
+          {{ item.nombre }} - {{ item.cantidad }} x {{ item.precio | currency }}
+        </li>
+      </ul>
+    </div>
+  
+    <div class="form-group mt-4">
+      <label>Correo del cliente</label>
+      <input type="email" [(ngModel)]="emailCliente" class="form-control" placeholder="cliente@correo.com" />
+    </div>
+  
+    <div class="mt-2">
+      <button class="btn btn-primary me-2" (click)="imprimirFactura()">Imprimir Factura</button>
+      <button class="btn btn-success" (click)="enviarFactura()">Enviar por Correo</button>
+    </div>
+  
+    <div *ngIf="enviado" class="alert alert-success mt-3">Factura enviada correctamente.</div>
+    <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  </div>
+  

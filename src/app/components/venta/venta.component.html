@@ -1,0 +1,10 @@
+<div *ngIf="!ventaFinalizada">
+    <h3>Carrito de venta (simulado)</h3>
+    <!-- Aquí podrías incluir productos, cantidades, etc -->
+    <button class="btn btn-primary" (click)="finalizarVenta()">Finalizar Venta</button>
+  </div>
+  
+  <div *ngIf="ventaFinalizada">
+    <app-venta-finalizada [resumenVenta]="resumenVenta"></app-venta-finalizada>
+  </div>
+  
