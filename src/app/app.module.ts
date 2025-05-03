@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms'; 
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,8 +12,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductosComponent } from './productos/productos.component';
 import { UsuariosListComponent } from './usuarios/usuarios-list/usuarios-list.component';
 import { UsuarioFormComponent } from './usuarios/usuario-form/usuario-form.component';
-
-import { authGuard } from './core/guards/auth.guard';
+import { VentaComponent } from './components/venta/venta.component'; // ⬅️ Añadido
+import { VentaFinalizadaComponent } from './components/venta-finalizada/venta-finalizada.component'; // ⬅️ Añadido
 
 // Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -35,12 +35,19 @@ import { MatCardModule } from '@angular/material/card';
     LoginComponent,
     RegistroComponent,
     DashboardComponent,
-    ProductosComponent
+    ProductosComponent,
+    UsuariosListComponent,
+    UsuarioFormComponent,
+    VentaComponent, // ⬅️ Aquí
+    VentaFinalizadaComponent // ⬅️ Aquí
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -52,7 +59,7 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule,
     MatOptionModule,
     MatSnackBarModule,
-    MatCardModule // Añadir esta línea
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
