@@ -52,16 +52,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Rol</mat-label>
-          <mat-select formControlName="rol" (selectionChange)="onRolChange()">
-            <mat-option value="usuario">Usuario</mat-option>
-            <mat-option value="administrador">Administrador</mat-option>
-          </mat-select>
-          <mat-error *ngIf="registroForm.get('rol')?.hasError('required')">
-            Seleccionar un rol es obligatorio.
-          </mat-error>
-        </mat-form-field>
+        
 
         <mat-form-field appearance="outline" class="full-width" *ngIf="mostrarCampoEmpresa">
           <mat-label>Clave de Empresa</mat-label>

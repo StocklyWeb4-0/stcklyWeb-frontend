@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./productos.component.scss']
 })
 export class ProductosComponent {
-
+  // Este componente sirve como contenedor para los componentes de gestión de productos
 }
