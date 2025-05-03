@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductosComponent } from './productos/productos.component';
+import { VentaComponent } from './components/venta/venta.component';
 import { UsuariosListComponent } from './usuarios/usuarios-list/usuarios-list.component';
 import { UsuarioFormComponent } from './usuarios/usuario-form/usuario-form.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'productos',
     component: ProductosComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'venta',
+    component: VentaComponent,
     canActivate: [authGuard]
   },
   {
