@@ -49,7 +49,9 @@ togglePasswordVisibility(): void {
       next: (response) => {
         // Simulación de éxito: Suponiendo que el servicio devuelve un token
         // localStorage.setItem('authToken', response.token); // Descomentar cuando el servicio real esté listo
-        this.snackBar.open('Inicio de sesión exitoso', 'Cerrar', { duration: 3000 });
+        // Extraer el nombre de usuario del correo para mostrar en la bienvenida
+        const nombreUsuario = correo.split('@')[0];
+        this.snackBar.open(`Bienvenido a StocklyWeb ${nombreUsuario}`, 'Cerrar', { duration: 3000 });
         this.router.navigate(['/dashboard']); // Redirige al dashboard o a la página principal
       },
       error: (error) => {
@@ -64,20 +66,23 @@ togglePasswordVisibility(): void {
     */
 
     // --- Inicio: Código de simulación (Eliminar cuando el backend esté listo) ---
-    // /* // Se descomenta el bloque de simulación
-    if (correo === 'admin@stockly.com' && contrasena === 'password123') {
-      // Simulación de éxito
-      localStorage.setItem('authToken', 'fake-jwt-token'); // Guardar un token falso
-      this.snackBar.open('Inicio de sesión exitoso (simulado)', 'Cerrar', { duration: 3000 });
-      this.router.navigate(['/dashboard']); // O la ruta a la que quieras redirigir
-    } else {
-      // Simulación de error
-      this.snackBar.open('Credenciales inválidas (simulado)', 'Cerrar', {
-        duration: 5000,
-        panelClass: ['error-snackbar']
-      });
-    }
-    // */ // Se descomenta el bloque de simulación
+    // Simulación de éxito para cualquier credencial durante la fase de desarrollo
+    localStorage.setItem('authToken', 'fake-jwt-token'); // Guardar un token falso
+    
+    // Extraer el nombre de usuario del correo para mostrar en la bienvenida
+    const nombreUsuario = correo.split('@')[0];
+    
+    // Mostrar mensaje de bienvenida personalizado
+    this.snackBar.open(`Bienvenido a StocklyWeb ${nombreUsuario}`, 'Cerrar', { 
+      duration: 5000,
+      panelClass: ['success-snackbar']
+    });
+    
+    console.log('Redirigiendo al dashboard...');
+    // Redirigir al dashboard después de mostrar el mensaje
+    setTimeout(() => {
+      this.router.navigate(['/dashboard']);
+    }, 100);
     // --- Fin: Código de simulación ---
   }
 }

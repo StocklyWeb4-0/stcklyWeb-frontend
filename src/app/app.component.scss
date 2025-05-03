@@ -1,0 +1,25 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Estilos para pantallas de autenticación */
+:host-context(:not(.authenticated)) .content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}

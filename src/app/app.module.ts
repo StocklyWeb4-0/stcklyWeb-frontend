@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { RegistroComponent } from './registro/registro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductosComponent } from './productos/productos.component';
 import { UsuariosListComponent } from './usuarios/usuarios-list/usuarios-list.component';
@@ -32,6 +33,7 @@ import { MatCardModule } from '@angular/material/card'; // Añadir esta línea
   declarations: [
     AppComponent,
     LoginComponent,
+    RegistroComponent,
     DashboardComponent,
     ProductosComponent,
     UsuariosListComponent,
