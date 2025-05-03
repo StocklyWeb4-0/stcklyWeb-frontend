@@ -1,44 +1,51 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { RegistroComponent } from './registro/registro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductosComponent } from './productos/productos.component';
+import { UsuariosListComponent } from './usuarios/usuarios-list/usuarios-list.component';
+import { UsuarioFormComponent } from './usuarios/usuario-form/usuario-form.component';
+
 import { authGuard } from './core/guards/auth.guard';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'; 
-import { VentaFinalizadaComponent } from './components/venta-finalizada/venta-finalizada.component';
-import { VentaComponent } from './components/venta/venta.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    RegistroComponent,
     DashboardComponent,
-    ProductosComponent,
-    VentaFinalizadaComponent,
-    VentaComponent
+    ProductosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule, 
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSnackBarModule,
+    MatCardModule // Añadir esta línea
   ],
   providers: [],
   bootstrap: [AppComponent]
