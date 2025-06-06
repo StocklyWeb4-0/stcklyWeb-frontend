@@ -1,0 +1,11 @@
+<div class="dashboard-table">
+  <h2>{{ title }}</h2>
+  <table mat-table [dataSource]="data" class="mat-elevation-z2">
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column">
+      <th mat-header-cell *matHeaderCellDef>{{ titleCasePipe.transform(column) }}</th>
+      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  </table>
+</div> 

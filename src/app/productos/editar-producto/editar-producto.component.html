@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="header">
+    <h1>Editar Producto</h1>
+  </div>
+
+  <div class="loading-container" *ngIf="cargando">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando información del producto...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>Error al cargar el producto. Por favor, intente nuevamente.</p>
+    <button mat-raised-button color="primary" (click)="cargarProducto()">Reintentar</button>
+  </div>
+
+  <mat-card *ngIf="!cargando && !error">
+    <mat-card-content>
+      <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre del producto</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej. Laptop HP">
+            <mat-error *ngIf="nombreControl?.errors?.['required']">El nombre es obligatorio</mat-error>
+            <mat-error *ngIf="nombreControl?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="descripcion" rows="4" placeholder="Descripción detallada del producto"></textarea>
+            <mat-error *ngIf="descripcionControl?.errors?.['required']">La descripción es obligatoria</mat-error>
+            <mat-error *ngIf="descripcionControl?.errors?.['minlength']">La descripción debe tener al menos 10 caracteres</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Precio</mat-label>
+            <input matInput type="number" formControlName="precio" placeholder="0.00" min="0.01" step="0.01">
+            <span matPrefix>$&nbsp;</span>
+            <mat-error *ngIf="precioControl?.errors?.['required']">El precio es obligatorio</mat-error>
+            <mat-error *ngIf="precioControl?.errors?.['min']">El precio debe ser mayor a 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Stock</mat-label>
+            <input matInput type="number" formControlName="stock" placeholder="0" min="0" step="1">
+            <mat-error *ngIf="stockControl?.errors?.['required']">El stock es obligatorio</mat-error>
+            <mat-error *ngIf="stockControl?.errors?.['min']">El stock no puede ser negativo</mat-error>
+            <mat-error *ngIf="stockControl?.errors?.['pattern']">El stock debe ser un número entero</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="categoria">
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+                {{categoria}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="categoriaControl?.errors?.['required']">La categoría es obligatoria</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>URL de la imagen (opcional)</mat-label>
+            <input matInput formControlName="imagen" placeholder="https://ejemplo.com/imagen.jpg">
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="cancelar()" [disabled]="enviando">Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="enviando">
+            <mat-spinner *ngIf="enviando" diameter="20" class="spinner-button"></mat-spinner>
+            <span *ngIf="!enviando">Actualizar Producto</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

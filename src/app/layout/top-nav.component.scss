@@ -1,0 +1,29 @@
+// @import 'styles/variables.scss';
+
+.sb-topnav {
+  height: 64px !important;
+  min-height: 64px !important;
+  display: flex;
+  align-items: center;
+  background: #343a40;
+}
+
+.sb-topnav .fa-icon {
+  font-size: 1.6rem;
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.sb-topnav .fa-icon:hover {
+  color: #4e73df;
+}
+
+.sb-topnav .btn-link.nav-link {
+  padding: 0.5rem 1rem;
+}
+
+.sb-topnav .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}

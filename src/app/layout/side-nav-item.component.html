@@ -1,0 +1,22 @@
+<ng-container *ngIf="sideNavItem">
+  <div *ngIf="!sideNavItem.submenu">
+    <a [routerLink]="sideNavItem.link" class="nav-link">
+      <fa-icon *ngIf="iconName" [icon]="['fas', iconName]"></fa-icon>
+      <span class="ml-2">{{ sideNavItem.text }}</span>
+    </a>
+  </div>
+  <div *ngIf="sideNavItem.submenu">
+    <a href="#" class="nav-link d-flex justify-content-between align-items-center" (click)="toggleExpand(); $event.preventDefault()">
+      <span>
+        <fa-icon *ngIf="iconName" [icon]="['fas', iconName]"></fa-icon>
+        <span class="ml-2">{{ sideNavItem.text }}</span>
+      </span>
+      <fa-icon [icon]="expanded ? ['fas', 'angle-down'] : ['fas', 'angle-right']"></fa-icon>
+    </a>
+    <div class="collapse sb-side-nav-sub" [class.show]="expanded">
+      <ng-container *ngFor="let sub of sideNavItem.submenu">
+        <sb-side-nav-item [sideNavItem]="sub"></sb-side-nav-item>
+      </ng-container>
+    </div>
+  </div>
+</ng-container> 

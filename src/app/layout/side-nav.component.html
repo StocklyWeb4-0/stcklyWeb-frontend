@@ -1,0 +1,22 @@
+<nav class="sb-sidenav accordion" id="sidenavAccordion" [ngClass]="sidenavStyle">
+    <button class="close-sidenav-btn" (click)="closeSidenav()">
+      <fa-icon [icon]="['fas', 'times']"></fa-icon>
+    </button>
+    <!-- Sección superior con icono y texto Admin -->
+    <div class="side-nav-profile text-center my-4">
+      <fa-icon [icon]="['fas', 'user']" size="2x"></fa-icon>
+      <div class="mt-2" style="font-weight: 500;">Admin</div>
+    </div>
+    <div class="sb-sidenav-menu">
+        <div class="nav">
+            <ng-container *ngFor="let section of sideNavSections"
+                ><div class="sb-sidenav-menu-heading" *ngIf="section.text">{{ section.text }}</div>
+                <ng-container *ngFor="let item of section.items"><sb-side-nav-item [sideNavItem]="sideNavItems[item]"></sb-side-nav-item></ng-container>
+            ></ng-container>
+        </div>
+    </div>
+    <div class="sb-sidenav-footer">
+        <div class="small">Logged in as:</div>
+        <!-- <span *ngIf="userService.user$ | async as user">{{user.firstName}} {{user.lastName}}</span> -->
+    </div>
+</nav>

@@ -1,0 +1,13 @@
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" routerLink="/dashboard" style="padding-left: 10px; margin-left: 20px;">StocklyWeb</a>
+    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" data-cy="topNavToggleSideNav" (click)="toggleSideNav()">
+        <fa-icon [icon]='["fas", "bars"]'></fa-icon>
+    </button>
+    <ul class="navbar-nav ml-auto ml-md-0">
+        <li class="nav-item">
+            <button class="btn btn-link nav-link text-white" (click)="logout()" title="Cerrar sesión">
+                <fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon>
+            </button>
+        </li>
+    </ul>
+</nav>

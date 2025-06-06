@@ -1,0 +1,58 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px); /* Ajusta 64px si tu barra de navegación tiene otra altura */
+  background-color: #f5f5f5; /* Un fondo suave */
+  padding: 20px;
+}
+
+.login-card {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+mat-card-title {
+  font-size: 1.5em;
+  color: #3f51b5; /* Color primario de Angular Material */
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.login-button {
+  margin-top: 10px;
+  padding: 10px 0;
+  font-size: 1.1em;
+}
+
+mat-card-actions {
+  margin-top: 15px;
+}
+
+/* Estilos para hacer el botón de mostrar/ocultar contraseña más accesible */
+button[mat-icon-button] {
+  outline: none;
+}
+
+/* Ajustes responsivos si es necesario */
+@media (max-width: 600px) {
+  .login-card {
+    padding: 15px;
+  }
+
+  mat-card-title {
+    font-size: 1.3em;
+  }
+}

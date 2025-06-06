@@ -1,0 +1,69 @@
+// @import 'styles/variables.scss';
+
+.sb-sidenav {
+  background: #343a40;
+  color: #fff;
+  width: 250px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* position: fixed; */
+  /* left: 0; */
+  /* top: 0; */
+  /* z-index: 1030; */
+}
+.sb-sidenav-menu {
+  flex: 1 1 auto;
+  padding: 1rem 0;
+}
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+.sb-sidenav-menu-heading {
+  padding: 0.75rem 1.5rem 0.25rem 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #adb5bd;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+}
+.sb-sidenav-footer {
+  padding: 1rem 1.5rem;
+  background: #23272b;
+  color: #adb5bd;
+  font-size: 0.85rem;
+}
+.side-nav-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.side-nav-profile .fa-icon {
+  font-size: 2.2rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+.side-nav-profile div {
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.close-sidenav-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  z-index: 1100;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-sidenav-btn:hover {
+  color: #4e73df;
+}
