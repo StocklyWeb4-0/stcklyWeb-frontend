@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faSearch, faBars, faTachometerAlt, faColumns, faBookOpen, faChartArea, faTable, faAngleDown, faAngleRight, faSignOutAlt, faTimes, faBox, faShoppingCart, faFileAlt, faTruck, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faBars, faTachometerAlt, faColumns, faBookOpen, faChartArea, faTable, faAngleDown, faAngleRight, faSignOutAlt, faTimes, faBox, faShoppingCart, faFileAlt, faTruck, faUser, faUsers, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -77,7 +77,7 @@ export class AppModule {
   constructor(library: FaIconLibrary) {
     library.addIcons(
       faSearch, faBars, faTachometerAlt, faColumns, faBookOpen, faChartArea, faTable, faAngleDown, faAngleRight, faSignOutAlt, faTimes,
-      faBox, faShoppingCart, faFileAlt, faTruck, faUser
+      faBox, faShoppingCart, faFileAlt, faTruck, faUser, faUsers, faRightFromBracket
     );
   }
 }

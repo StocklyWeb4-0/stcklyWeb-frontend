@@ -1,13 +1,30 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink="/dashboard" style="padding-left: 10px; margin-left: 20px;">StocklyWeb</a>
-    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" data-cy="topNavToggleSideNav" (click)="toggleSideNav()">
-        <fa-icon [icon]='["fas", "bars"]'></fa-icon>
+    <!-- Botón hamburguesa con clase para estilo personalizado -->
+    <button
+      class="btn btn-link btn-lg order-1 order-lg-0 topbar-hamburger"
+      id="sidebarToggle"
+      data-cy="topNavToggleSideNav"
+      (click)="toggleSideNav()"
+    >
+      <fa-icon class="icon-hamburger" [icon]="['fas', 'bars']"></fa-icon>
     </button>
+  
+    <!-- Nombre de la aplicación -->
+    <a class="navbar-brand" routerLink="/dashboard" style="padding-left: 10px; margin-left: 10px;">
+      StocklyWeb
+    </a>
+  
+    <!-- Espaciador para empujar el botón de logout a la derecha -->
+    <div class="topbar-spacer"></div>
+  
+    <!-- Botón de logout -->
+    <button class="btn btn-link btn-logout-left" (click)="logout()" title="Cerrar sesión">
+      <fa-icon [icon]="['fas', 'right-from-bracket']"></fa-icon>
+    </button>
+  
+    <!-- Menú derecho (vacío por ahora) -->
     <ul class="navbar-nav ml-auto ml-md-0">
-        <li class="nav-item">
-            <button class="btn btn-link nav-link text-white" (click)="logout()" title="Cerrar sesión">
-                <fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon>
-            </button>
-        </li>
+      <!-- Puedes agregar más botones aquí -->
     </ul>
-</nav>
+  </nav>
+  

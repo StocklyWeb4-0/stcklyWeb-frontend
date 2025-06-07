@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { TitleCasePipe } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
 import { LayoutModule } from '../layout/layout.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LayoutModule } from '../layout/layout.module';
     MatButtonModule,
     MatTableModule,
     NgChartsModule,
-    LayoutModule
+    LayoutModule,
+    MatIconModule
   ],
   providers: [
     TitleCasePipe
