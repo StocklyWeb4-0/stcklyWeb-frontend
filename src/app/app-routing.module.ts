@@ -12,6 +12,7 @@ import { ClienteFormComponent } from './clientes/cliente-form/cliente-form.compo
 import { authGuard } from './core/guards/auth.guard';
 import { LayoutDashboardComponent } from './layout/layout-dashboard.component';
 import { ListaProductosComponent } from './productos/lista-productos/lista-productos.component';
+import { CreditosModule } from './creditos/creditos.module';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'clientes', component: ClientesListComponent },
       { path: 'clientes/crear', component: ClienteFormComponent },
       { path: 'clientes/editar/:id', component: ClienteFormComponent },
+      { path: 'creditos', loadChildren: () => import('./creditos/creditos.module').then(m => m.CreditosModule) }
     ]
   },
   { path: '**', redirectTo: '/login' }

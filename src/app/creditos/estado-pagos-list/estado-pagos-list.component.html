@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2>Estados de Pago</h2>
+  <div style="margin-bottom: 16px;">
+    <button mat-mini-fab color="primary" aria-label="Agregar estado" (click)="abrirModalCrearEstado()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="dataSource && dataSource.data.length > 0">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let estado">{{ estado.id }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let estado">{{ estado.name }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+      <td mat-cell *matCellDef="let estado">{{ estado.description }}</td>
+    </ng-container>
+
+    <!-- Acciones Column -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef class="mat-column-acciones">Acciones</th>
+      <td mat-cell *matCellDef="let estado" class="mat-column-acciones">
+        <button mat-icon-button color="primary" (click)="editarEstado(estado)" aria-label="Editar estado">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminarEstado(estado)" aria-label="Eliminar estado">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <p *ngIf="dataSource && dataSource.data.length === 0">No hay estados de pago disponibles.</p>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons *ngIf="dataSource && dataSource.data.length > 0"></mat-paginator>
+</div>

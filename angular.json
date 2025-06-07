@@ -71,21 +71,21 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "proxyConfig": "frontend/proxy.conf.json"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "StocklyWeb:build:production"
+          "serve": {
+            "builder": "@angular-devkit/build-angular:dev-server",
+            "options": {
+              "proxyConfig": "proxy.conf.json"
             },
-            "development": {
-              "browserTarget": "StocklyWeb:build:development"
-            }
+            "configurations": {
+              "production": {
+                "browserTarget": "StocklyWeb:build:production"
+              },
+              "development": {
+                "browserTarget": "StocklyWeb:build:development"
+              }
+            },
+            "defaultConfiguration": "development"
           },
-          "defaultConfiguration": "development"
-        },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
