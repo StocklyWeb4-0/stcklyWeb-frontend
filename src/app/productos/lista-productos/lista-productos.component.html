@@ -9,17 +9,24 @@
       </button>
     </mat-form-field>
 
-    <!-- Filtro de categoría -->
-    <mat-form-field appearance="fill" style="width: 200px;">
-      <mat-label>Filtrar por categoría</mat-label>
-      <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
-        <mat-option [value]="''">Todas</mat-option>
-        <mat-option *ngFor="let category of categories" [value]="category.id">
-          {{ category.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="primary" style="margin-left: 8px;" routerLink="/productos/categorias">Agregar Categoría</button>
+    <!-- Filtro de categoría y botón Agregar Categoría juntos -->
+    <div style="display: flex; align-items: center; gap: 8px; flex-direction: column; align-items: flex-start;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <mat-form-field appearance="fill" style="width: 200px; margin: 0;">
+          <mat-label>Filtrar por categoría</mat-label>
+          <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
+            <mat-option [value]="''">Todas</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" routerLink="/productos/categorias">Agregar Categoría</button>
+      </div>
+      <span style="font-size: 0.875rem; color: #666;">
+        Si no existe la categoría deseada, haz clic en "Agregar Categoría"
+      </span>
+    </div>
   </div>
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table" style="width: 100%; background-color: white; border-radius: 8px;">
@@ -69,6 +76,6 @@
   </mat-paginator>
 
   <div style="margin-top: 16px; text-align: right;">
-    <button mat-raised-button color="primary" (click)="editarProducto('nuevo')">Agregar producto</button>
+    <button mat-raised-button color="primary" (click)="agregarProducto()">Agregar producto</button>
   </div>
 </div>

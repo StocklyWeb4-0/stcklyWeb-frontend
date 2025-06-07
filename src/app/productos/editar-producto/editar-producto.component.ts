@@ -34,7 +34,13 @@ export class EditarProductoComponent implements OnInit {
     this.inicializarFormulario();
     this.cargarCategorias();
     this.productoId = this.data.id || '';
-    this.tituloModal = this.productoId === 'nuevo' ? 'Agregar Producto' : 'Editar Producto';
+    if (this.productoId === 'nuevo') {
+      this.tituloModal = 'Agregar Producto';
+      this.cargando = false; // No cargar producto, modo creación
+    } else {
+      this.tituloModal = 'Editar Producto';
+      this.cargarProducto();
+    }
     if (!this.productoId) {
       this.error = true;
       this.cargando = false;
@@ -44,12 +50,9 @@ export class EditarProductoComponent implements OnInit {
       });
       return;
     }
-    if (this.productoId === 'nuevo') {
-      this.cargando = false; // No cargar producto, modo creación
-    } else {
-      this.cargarProducto();
-    }
   }
+
+
 
   inicializarFormulario(): void {
     const isCrear = this.productoId === 'nuevo';
@@ -121,55 +124,57 @@ export class EditarProductoComponent implements OnInit {
 
     this.enviando = true;
 
-      if (this.productoId === 'nuevo') {
-        this.productoService.crearProducto(this.productoForm.value).subscribe({
-          next: () => {
-            this.snackBar.open('Producto creado con éxito', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['success-snackbar']
-            });
-            this.enviando = false;
-            this.dialogRef.close('creado');
-          },
-          error: (error) => {
-            console.error('Error al crear producto:', error);
-            this.snackBar.open('Error al crear el producto', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['error-snackbar']
-            });
-            this.enviando = false;
-          }
-        });
-      } else {
-        this.productoService.actualizarProducto(this.productoId, this.productoForm.value).subscribe({
-          next: () => {
-            this.snackBar.open('Producto actualizado con éxito', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['success-snackbar']
-            });
-            this.enviando = false;
-            this.dialogRef.close('actualizado');
-          },
-          error: (error) => {
-            console.error('Error al actualizar producto:', error);
-            this.snackBar.open('Error al actualizar el producto', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['error-snackbar']
-            });
-            this.enviando = false;
-          }
-        });
-      }
+    if (this.productoId === 'nuevo') {
+      this.productoService.crearProducto(this.productoForm.value).subscribe({
+        next: () => {
+          this.snackBar.open('Producto creado con éxito', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.enviando = false;
+          this.dialogRef.close('creado');
+        },
+        error: (error) => {
+          console.error('Error al crear producto:', error);
+          this.snackBar.open('Error al crear el producto', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+          this.enviando = false;
+        }
+      });
+    } else {
+      this.productoService.actualizarProducto(this.productoId, this.productoForm.value).subscribe({
+        next: () => {
+          this.snackBar.open('Producto actualizado con éxito', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.enviando = false;
+          this.dialogRef.close('actualizado');
+        },
+        error: (error) => {
+          console.error('Error al actualizar producto:', error);
+          this.snackBar.open('Error al actualizar el producto', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+          this.enviando = false;
+        }
+      });
+    }
   }
+
 
   cancelar(): void {
-    this.router.navigate(['/productos']);
+    this.dialogRef.close();
   }
 
+
   // Getters para acceder fácilmente a los form controls en el template
-  get nombreControl() { return this.productoForm.get('nombre'); }
-  get descripcionControl() { return this.productoForm.get('descripcion'); }
-  get precioControl() { return this.productoForm.get('precio'); }
+  get nombreControl() { return this.productoForm.get('name'); }
+  get descripcionControl() { return this.productoForm.get('description'); }
+  get precioControl() { return this.productoForm.get('price'); }
   get stockControl() { return this.productoForm.get('stock'); }
-  get categoriaControl() { return this.productoForm.get('categoria'); }
+  get categoriaControl() { return this.productoForm.get('idCategory'); }
 }

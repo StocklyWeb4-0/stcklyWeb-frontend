@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductoService } from '../../core/services/producto.service';
 import { EditarProductoComponent } from '../editar-producto/editar-producto.component';
+import { CrearProductoComponent } from '../crear-producto/crear-producto.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -63,11 +64,11 @@ export class ListaProductosComponent implements OnInit, AfterViewInit {
     this.error = false;
     console.log('Cargando productos...');
 
-    this.productoService.getProductos(this.selectedCategory === '' ? undefined : this.selectedCategory.toString()).subscribe({
+    this.productoService.getProductos().subscribe({
       next: (response) => {
         console.log('Respuesta del backend:', response);
-        this.dataSource.data = response;
-        this.totalProductos = response.length || 0;
+        this.dataSource.data = response.content || response;
+        this.totalProductos = response.totalElements || (response.length || 0);
         this.cargando = false;
 
         this.dataSource.filterPredicate = (data: any, filter: string) => {
@@ -76,7 +77,8 @@ export class ListaProductosComponent implements OnInit, AfterViewInit {
             const value = data[key];
             return (typeof value === 'string' || typeof value === 'number') && value.toString().toLowerCase().includes(searchTerms.text.toLowerCase());
           });
-          return textMatch;
+          const categoryMatch = searchTerms.category === '' || data.idCategory === searchTerms.category;
+          return textMatch && categoryMatch;
         };
 
         this.aplicarFiltroInterno();
@@ -88,6 +90,7 @@ export class ListaProductosComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
 
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value;
@@ -118,6 +121,18 @@ export class ListaProductosComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'actualizado' || result === 'creado') {
+        this.cargarProductos();
+      }
+    });
+  }
+
+  agregarProducto() {
+    const dialogRef = this.dialog.open(CrearProductoComponent, {
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'creado') {
         this.cargarProductos();
       }
     });

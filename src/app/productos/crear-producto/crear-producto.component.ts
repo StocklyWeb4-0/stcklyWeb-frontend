@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductoService } from '../../core/services/producto.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-crear-producto',
@@ -11,28 +12,48 @@ import { ProductoService } from '../../core/services/producto.service';
 })
 export class CrearProductoComponent implements OnInit {
   productoForm!: FormGroup;
+  error = false;
+  tituloModal: string = 'Agregar Producto';
+  cargando = true;
   enviando = false;
-  categorias: string[] = ['Electrónicos', 'Accesorios', 'Audio', 'Computadoras', 'Celulares', 'Otros'];
+  categorias: {id: number, name: string}[] = [];
+  productoId: string = '';
 
   constructor(
     private fb: FormBuilder,
     private productoService: ProductoService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<CrearProductoComponent>
   ) {}
 
   ngOnInit(): void {
     this.inicializarFormulario();
+    this.cargarCategorias();
   }
 
+  cargarCategorias(): void {
+    this.productoService.getCategorias().subscribe({
+      next: (data) => {
+        this.categorias = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
+  }
+
+
   inicializarFormulario(): void {
+    const isCrear = this.productoId === 'nuevo';
     this.productoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      precio: ['', [Validators.required, Validators.min(0.01)]],
-      stock: ['', [Validators.required, Validators.min(0), Validators.pattern('^[0-9]*$')]],
-      categoria: ['', Validators.required],
-      imagen: [''] // Opcional
+      code: ['', isCrear ? [Validators.required, Validators.minLength(1), Validators.maxLength(255)] : []],
+      name: ['', isCrear ? [Validators.required, Validators.minLength(3), Validators.maxLength(255)] : []],
+      description: ['', isCrear ? [] : []],
+      price: ['', isCrear ? [Validators.required, Validators.min(0.01)] : []],
+      priceDiscount: [''],
+      stock: ['', isCrear ? [] : [Validators.min(0)]],
+      idCategory: ['', isCrear ? Validators.required : []],
     });
   }
 
@@ -48,46 +69,35 @@ export class CrearProductoComponent implements OnInit {
 
     this.enviando = true;
 
-    // Simulación de creación mientras se implementa el backend
-    setTimeout(() => {
-      this.snackBar.open('Producto creado con éxito', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
-      this.enviando = false;
-      this.router.navigate(['/productos']);
-
-      /* Código para cuando se implemente el backend
-      this.productoService.crearProducto(this.productoForm.value).subscribe({
-        next: () => {
-          this.snackBar.open('Producto creado con éxito', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.enviando = false;
-          this.router.navigate(['/productos']);
-        },
-        error: (error) => {
-          console.error('Error al crear producto:', error);
-          this.snackBar.open('Error al crear el producto', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-          this.enviando = false;
-        }
-      });
-      */
-    }, 800);
+    this.productoService.crearProducto(this.productoForm.value).subscribe({
+      next: () => {
+        this.snackBar.open('Producto creado con éxito', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.enviando = false;
+        this.dialogRef.close('creado');
+      },
+      error: (error) => {
+        console.error('Error al crear producto:', error);
+        this.snackBar.open('Error al crear el producto', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+        this.enviando = false;
+      }
+    });
   }
 
   cancelar(): void {
-    this.router.navigate(['/productos']);
+    this.dialogRef.close();
   }
 
   // Getters para acceder fácilmente a los form controls en el template
-  get nombreControl() { return this.productoForm.get('nombre'); }
-  get descripcionControl() { return this.productoForm.get('descripcion'); }
-  get precioControl() { return this.productoForm.get('precio'); }
+  get nombreControl() { return this.productoForm.get('name'); }
+  get descripcionControl() { return this.productoForm.get('description'); }
+  get precioControl() { return this.productoForm.get('price'); }
   get stockControl() { return this.productoForm.get('stock'); }
-  get categoriaControl() { return this.productoForm.get('categoria'); }
+  get categoriaControl() { return this.productoForm.get('idCategory'); }
+
 }

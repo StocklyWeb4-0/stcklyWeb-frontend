@@ -9,6 +9,7 @@ import { ListaProductosComponent } from './lista-productos/lista-productos.compo
 import { CrearProductoComponent } from './crear-producto/crear-producto.component';
 import { EditarProductoComponent } from './editar-producto/editar-producto.component';
 import { CategoriasComponent } from './categorias/categorias.component';
+import { EditarCategoriaComponent } from './editar-categoria/editar-categoria.component';
 
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
@@ -44,7 +45,8 @@ const routes: Routes = [
     ListaProductosComponent,
     CrearProductoComponent,
     EditarProductoComponent,
-    CategoriasComponent
+    CategoriasComponent,
+    EditarCategoriaComponent
   ],
   imports: [
     CommonModule,

@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container" style="max-height: 80vh; overflow-y: auto;">
   <div class="header">
-    <h1>Crear Nuevo Producto</h1>
+    <h1>{{ tituloModal }}</h1>
   </div>
 
   <mat-card>
@@ -8,8 +8,18 @@
       <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
           <mat-form-field appearance="outline">
+            <mat-label>Código</mat-label>
+            <input matInput formControlName="code" placeholder="Código único del producto">
+            <mat-error *ngIf="productoForm.get('code')?.errors?.['required']">El código es obligatorio</mat-error>
+            <mat-error *ngIf="productoForm.get('code')?.errors?.['minlength']">El código debe tener al menos 1 carácter</mat-error>
+            <mat-error *ngIf="productoForm.get('code')?.errors?.['maxlength']">El código no puede exceder 255 caracteres</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
             <mat-label>Nombre del producto</mat-label>
-            <input matInput formControlName="nombre" placeholder="Ej. Laptop HP">
+            <input matInput formControlName="name" placeholder="Ej. Laptop HP">
             <mat-error *ngIf="nombreControl?.errors?.['required']">El nombre es obligatorio</mat-error>
             <mat-error *ngIf="nombreControl?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</mat-error>
           </mat-form-field>
@@ -18,19 +28,25 @@
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="descripcion" rows="4" placeholder="Descripción detallada del producto"></textarea>
+            <textarea matInput formControlName="description" rows="4" placeholder="Descripción detallada del producto"></textarea>
             <mat-error *ngIf="descripcionControl?.errors?.['required']">La descripción es obligatoria</mat-error>
             <mat-error *ngIf="descripcionControl?.errors?.['minlength']">La descripción debe tener al menos 10 caracteres</mat-error>
           </mat-form-field>
         </div>
 
-        <div class="form-row two-columns">
+        <div class="form-row three-columns">
           <mat-form-field appearance="outline">
             <mat-label>Precio</mat-label>
-            <input matInput type="number" formControlName="precio" placeholder="0.00" min="0.01" step="0.01">
+            <input matInput type="number" formControlName="price" placeholder="0.00" min="0.01" step="0.01">
             <span matPrefix>$&nbsp;</span>
             <mat-error *ngIf="precioControl?.errors?.['required']">El precio es obligatorio</mat-error>
             <mat-error *ngIf="precioControl?.errors?.['min']">El precio debe ser mayor a 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Precio Descuento</mat-label>
+            <input matInput type="number" formControlName="priceDiscount" placeholder="0.00" min="0" step="0.01">
+            <span matPrefix>$&nbsp;</span>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -42,12 +58,12 @@
           </mat-form-field>
         </div>
 
-        <div class="form-row">
-          <mat-form-field appearance="outline">
+        <div class="form-row" style="display: flex; align-items: center; gap: 12px;">
+          <mat-form-field appearance="outline" style="flex: 1;">
             <mat-label>Categoría</mat-label>
-            <mat-select formControlName="categoria">
-              <mat-option *ngFor="let categoria of categorias" [value]="categoria">
-                {{categoria}}
+            <mat-select formControlName="idCategory">
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
+                {{categoria.name}}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="categoriaControl?.errors?.['required']">La categoría es obligatoria</mat-error>
@@ -57,7 +73,7 @@
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>URL de la imagen (opcional)</mat-label>
-            <input matInput formControlName="imagen" placeholder="https://ejemplo.com/imagen.jpg">
+            <input matInput formControlName="image" placeholder="https://ejemplo.com/imagen.jpg">
           </mat-form-field>
         </div>
 
