@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProductoService, Producto } from '../../core/services/producto.service';
+import { ProductoService } from '../../core/services/producto.service';
+import { ProductCategoriesService } from '../../core/services/product-categories.service';
 
 @Component({
   selector: 'app-editar-producto',
@@ -12,22 +14,27 @@ import { ProductoService, Producto } from '../../core/services/producto.service'
 export class EditarProductoComponent implements OnInit {
   productoForm!: FormGroup;
   productoId: string = '';
+  tituloModal: string = 'Editar Producto';
   cargando = true;
   enviando = false;
   error = false;
-  categorias: string[] = ['Electrónicos', 'Accesorios', 'Audio', 'Computadoras', 'Celulares', 'Otros'];
+  categorias: {id: number, name: string}[] = [];
 
   constructor(
     private fb: FormBuilder,
     private productoService: ProductoService,
-    private route: ActivatedRoute,
+    private productCategoriesService: ProductCategoriesService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<EditarProductoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
     this.inicializarFormulario();
-    this.productoId = this.route.snapshot.paramMap.get('id') || '';
+    this.cargarCategorias();
+    this.productoId = this.data.id || '';
+    this.tituloModal = this.productoId === 'nuevo' ? 'Agregar Producto' : 'Editar Producto';
     if (!this.productoId) {
       this.error = true;
       this.cargando = false;
@@ -37,17 +44,23 @@ export class EditarProductoComponent implements OnInit {
       });
       return;
     }
-    this.cargarProducto();
+    if (this.productoId === 'nuevo') {
+      this.cargando = false; // No cargar producto, modo creación
+    } else {
+      this.cargarProducto();
+    }
   }
 
   inicializarFormulario(): void {
+    const isCrear = this.productoId === 'nuevo';
     this.productoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      precio: ['', [Validators.required, Validators.min(0.01)]],
-      stock: ['', [Validators.required, Validators.min(0), Validators.pattern('^[0-9]*$')]],
-      categoria: ['', Validators.required],
-      imagen: [''] // Opcional
+      code: ['', isCrear ? [Validators.required, Validators.minLength(1), Validators.maxLength(255)] : []],
+      name: ['', isCrear ? [Validators.required, Validators.minLength(3), Validators.maxLength(255)] : []],
+      description: ['', isCrear ? [] : []],
+      price: ['', isCrear ? [Validators.required, Validators.min(0.01)] : []],
+      priceDiscount: [''],
+      stock: ['', isCrear ? [] : [Validators.min(0)]],
+      idCategory: ['', isCrear ? Validators.required : []],
     });
   }
 
@@ -55,26 +68,45 @@ export class EditarProductoComponent implements OnInit {
     this.cargando = true;
     this.error = false;
 
-    
-  
-      /* Código para cuando se implemente el backend
-      this.productoService.getProducto(this.productoId).subscribe({
-        next: (producto) => {
-          this.productoForm.patchValue(producto);
-          this.cargando = false;
-        },
-        error: (error) => {
-          console.error('Error al cargar producto:', error);
-          this.error = true;
-          this.cargando = false;
-          this.snackBar.open('Error al cargar el producto', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
-      */
+    this.productoService.getProducto(this.productoId).subscribe({
+      next: (producto) => {
+        // Asegurar que el campo code se carga en el formulario
+        this.productoForm.patchValue({
+          code: producto.code,
+          name: producto.name,
+          description: producto.description,
+          price: producto.price,
+          priceDiscount: producto.priceDiscount,
+          stock: producto.stock,
+          idCategory: producto.idCategory,
+        });
+        this.cargando = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar producto:', error);
+        this.error = true;
+        this.cargando = false;
+        this.snackBar.open('Error al cargar el producto', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
 
+  cargarCategorias(): void {
+    this.productCategoriesService.getCategories().subscribe({
+      next: (categories) => {
+        this.categorias = categories;
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+        this.snackBar.open('Error al cargar las categorías', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
   }
 
   onSubmit(): void {
@@ -89,36 +121,45 @@ export class EditarProductoComponent implements OnInit {
 
     this.enviando = true;
 
-    // Simulación de actualización mientras se implementa el backend
-    setTimeout(() => {
-      this.snackBar.open('Producto actualizado con éxito', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
-      this.enviando = false;
-      this.router.navigate(['/productos']);
-
-      /* Código para cuando se implemente el backend
-      this.productoService.actualizarProducto(this.productoId, this.productoForm.value).subscribe({
-        next: () => {
-          this.snackBar.open('Producto actualizado con éxito', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.enviando = false;
-          this.router.navigate(['/productos']);
-        },
-        error: (error) => {
-          console.error('Error al actualizar producto:', error);
-          this.snackBar.open('Error al actualizar el producto', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-          this.enviando = false;
-        }
-      });
-      */
-    }, 800);
+      if (this.productoId === 'nuevo') {
+        this.productoService.crearProducto(this.productoForm.value).subscribe({
+          next: () => {
+            this.snackBar.open('Producto creado con éxito', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.enviando = false;
+            this.dialogRef.close('creado');
+          },
+          error: (error) => {
+            console.error('Error al crear producto:', error);
+            this.snackBar.open('Error al crear el producto', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+            this.enviando = false;
+          }
+        });
+      } else {
+        this.productoService.actualizarProducto(this.productoId, this.productoForm.value).subscribe({
+          next: () => {
+            this.snackBar.open('Producto actualizado con éxito', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.enviando = false;
+            this.dialogRef.close('actualizado');
+          },
+          error: (error) => {
+            console.error('Error al actualizar producto:', error);
+            this.snackBar.open('Error al actualizar el producto', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+            this.enviando = false;
+          }
+        });
+      }
   }
 
   cancelar(): void {

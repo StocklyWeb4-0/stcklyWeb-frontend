@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faSearch, faBars, faTachometerAlt, faColumns, faBookOpen, faChartArea, faTable, faAngleDown, faAngleRight, faSignOutAlt, faTimes, faBox, faShoppingCart, faFileAlt, faTruck, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -32,13 +32,15 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistroComponent,
     // DashboardComponent,
-    ProductosComponent,
+    // ProductosComponent,  // Eliminado para evitar declaración duplicada
     UsuariosListComponent,
     UsuarioFormComponent,
     VentaComponent, // ⬅️ Aquí
@@ -66,7 +68,9 @@ import { MatCardModule } from '@angular/material/card';
     LayoutModule,
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

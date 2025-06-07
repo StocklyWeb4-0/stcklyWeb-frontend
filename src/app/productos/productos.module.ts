@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // Componentes
 import { ProductosComponent } from './productos.component';
 import { ListaProductosComponent } from './lista-productos/lista-productos.component';
 import { CrearProductoComponent } from './crear-producto/crear-producto.component';
 import { EditarProductoComponent } from './editar-producto/editar-producto.component';
+import { CategoriasComponent } from './categorias/categorias.component';
 
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
@@ -21,6 +22,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatListModule } from '@angular/material/list';
 
 const routes: Routes = [
   {
@@ -29,7 +32,8 @@ const routes: Routes = [
     children: [
       { path: '', component: ListaProductosComponent },
       { path: 'crear', component: CrearProductoComponent },
-      { path: 'editar/:id', component: EditarProductoComponent }
+      { path: 'editar/:id', component: EditarProductoComponent },
+      { path: 'categorias', component: CategoriasComponent }
     ]
   }
 ];
@@ -39,11 +43,13 @@ const routes: Routes = [
     ProductosComponent,
     ListaProductosComponent,
     CrearProductoComponent,
-    EditarProductoComponent
+    EditarProductoComponent,
+    CategoriasComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     RouterModule.forChild(routes),
     MatTableModule,
     MatPaginatorModule,
@@ -55,7 +61,9 @@ const routes: Routes = [
     MatCardModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    MatListModule
   ]
 })
 export class ProductosModule { }

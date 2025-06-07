@@ -1,24 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProductoService, Producto } from '../../core/services/producto.service';
-import { Router } from '@angular/router';
+import { ProductoService } from '../../core/services/producto.service';
+import { EditarProductoComponent } from '../editar-producto/editar-producto.component';
 
 @Component({
   selector: 'app-lista-productos',
   templateUrl: './lista-productos.component.html',
   styleUrls: ['./lista-productos.component.scss']
 })
-export class ListaProductosComponent implements OnInit {
-  displayedColumns: string[] = ['codigo', 'nombre', 'categoria', 'marca', 'unidadMedida', 'precioUnitario', 'stock', 'acciones'];
-  dataSource = new MatTableDataSource<Producto>([]);
+export class ListaProductosComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = ['codigo', 'producto', 'stock', 'precio', 'acciones'];
+  dataSource = new MatTableDataSource<any>([]);
   cargando = true;
   error = false;
   totalProductos = 0;
   filtro = '';
+  selectedCategory: number | '' = '';
+  categories: {id: number, name: string}[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -26,12 +28,28 @@ export class ListaProductosComponent implements OnInit {
   constructor(
     private productoService: ProductoService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private router: Router
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
+    this.loadCategories();
+  }
+
+  loadCategories(): void {
+    this.productoService.getCategorias().subscribe({
+      next: (data) => {
+        console.log('Categorías recibidas:', data);
+        this.categories = data.map((cat: any) => ({
+          id: cat.id,
+          name: cat.name
+        }));
+        console.log('Categorías mapeadas:', this.categories);
+      },
+      error: (err) => {
+        console.error('Error al cargar las categorías:', err);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -39,112 +57,89 @@ export class ListaProductosComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  cargarProductos() {
+  cargarProductos(pageIndex?: number, pageSize?: number) {
     this.cargando = true;
     this.error = false;
+    console.log('Cargando productos...');
 
-    // Simulación de datos para tienda de construcción
-    setTimeout(() => {
-      const productosSimulados: Producto[] = [ // Ahora usamos la interfaz Producto actualizada
-        { id: '1', codigo: 'CEM001', nombre: 'Cemento Portland Gris', categoria: 'Materiales Básicos', marca: 'Argos', unidadMedida: 'Bulto 50kg', precioUnitario: 32.300, stock: 150, descripcion: 'Cemento gris para construcción general' },
-        { id: '2', codigo: 'VAR003', nombre: 'Varilla Corrugada 1/2"', categoria: 'Acero', marca: 'Gerdau', unidadMedida: 'Unidad 6m', precioUnitario: 35.400, stock: 300, descripcion: 'Varilla de acero para refuerzo estructural' },
-        { id: '3', codigo: 'LAD010', nombre: 'Ladrillo Común Prensado', categoria: 'Mampostería', marca: 'Santafé', unidadMedida: 'Unidad', precioUnitario: 0.80, stock: 5000, descripcion: 'Ladrillo estándar para muros' },
-        { id: '4', codigo: 'PIN005', nombre: 'Pintura Blanca Vinilo Tipo 1', categoria: 'Acabados', marca: 'Pintuco', unidadMedida: 'Galón', precioUnitario: 45.00, stock: 80, descripcion: 'Pintura lavable para interiores y exteriores' },
-        { id: '5', codigo: 'TUB002', nombre: 'Tubo PVC Sanitario 4"', categoria: 'Plomería', marca: 'Pavco', unidadMedida: 'Unidad 3m', precioUnitario: 15.20, stock: 200, descripcion: 'Tubo para desagües sanitarios' },
-        { id: '6', codigo: 'HER015', nombre: 'Taladro Percutor 1/2"', categoria: 'Herramientas', marca: 'Dewalt', unidadMedida: 'Unidad', precioUnitario: 350.00, stock: 25, descripcion: 'Taladro eléctrico con función de percusión' }
-      ];
+    this.productoService.getProductos(this.selectedCategory === '' ? undefined : this.selectedCategory.toString()).subscribe({
+      next: (response) => {
+        console.log('Respuesta del backend:', response);
+        this.dataSource.data = response;
+        this.totalProductos = response.length || 0;
+        this.cargando = false;
 
-      this.dataSource.data = productosSimulados;
-      this.totalProductos = productosSimulados.length;
-      this.cargando = false;
-
-      /* Código para cuando se implemente el backend
-      this.productoService.getProductos(
-        this.paginator?.pageIndex || 0,
-        this.paginator?.pageSize || 10,
-        this.filtro
-      ).subscribe({
-        next: (response) => {
-          this.dataSource.data = response.productos;
-          this.totalProductos = response.total;
-          this.cargando = false;
-        },
-        error: (error) => {
-          console.error('Error al cargar productos:', error);
-          this.error = true;
-          this.cargando = false;
-          this.snackBar.open('Error al cargar los productos', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
+        this.dataSource.filterPredicate = (data: any, filter: string) => {
+          const searchTerms = JSON.parse(filter);
+          const textMatch = Object.keys(data).some(key => {
+            const value = data[key];
+            return (typeof value === 'string' || typeof value === 'number') && value.toString().toLowerCase().includes(searchTerms.text.toLowerCase());
           });
-        }
-      });
-      */
-    }, 800);
+          return textMatch;
+        };
+
+        this.aplicarFiltroInterno();
+      },
+      error: (err) => {
+        this.error = true;
+        this.cargando = false;
+        console.error('Error al cargar productos:', err);
+      }
+    });
   }
 
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value;
     this.filtro = valorFiltro.trim().toLowerCase();
-    // Ajustar el predicado de filtro para buscar en los nuevos campos
-    this.dataSource.filterPredicate = (data: Producto, filter: string) => { // Usar la interfaz Producto
-      const dataStr = Object.keys(data).reduce((currentTerm: string, key: string) => {
-        // Asegurarse de que solo se concatenan strings o números para el filtro
-        const value = (data as {[key: string]: any})[key];
-        return currentTerm + (typeof value === 'string' || typeof value === 'number' ? value : '') + '◬';
-      }, '').toLowerCase();
-      return dataStr.indexOf(filter) !== -1;
-    };
-    this.dataSource.filter = this.filtro;
+    this.aplicarFiltroInterno();
+  }
+
+  aplicarFiltroInterno() {
+    const filterValue = JSON.stringify({ text: this.filtro, category: this.selectedCategory });
+    console.log('Aplicando filtro:', filterValue);
+    this.dataSource.filter = filterValue;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
 
-    // Cuando se implemente el backend, descomentar esto y comentar lo anterior
-    // this.cargarProductos();
+  onCategoryChange() {
+    this.cargarProductos();
+    this.aplicarFiltroInterno();
   }
 
   editarProducto(id: string) {
-    this.router.navigate(['/productos/editar', id]);
+    const dialogRef = this.dialog.open(EditarProductoComponent, {
+      width: '600px',
+      data: { id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'actualizado' || result === 'creado') {
+        this.cargarProductos();
+      }
+    });
   }
 
   eliminarProducto(id: string) {
     if (confirm('¿Está seguro de que desea eliminar este producto?')) {
-      // Simulación de eliminación mientras se implementa el backend
-      this.dataSource.data = this.dataSource.data.filter(producto => producto.id !== id);
-      this.snackBar.open('Producto eliminado con éxito', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
-
-      /* Código para cuando se implemente el backend
-      this.productoService.eliminarProducto(id).subscribe({
+      this.productoService.eliminarProducto(Number(id)).subscribe({
         next: () => {
+          this.cargarProductos();
           this.snackBar.open('Producto eliminado con éxito', 'Cerrar', {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
-          this.cargarProductos();
         },
-        error: (error) => {
-          console.error('Error al eliminar producto:', error);
+        error: (err) => {
           this.snackBar.open('Error al eliminar el producto', 'Cerrar', {
             duration: 3000,
             panelClass: ['error-snackbar']
           });
+          console.error('Error al eliminar producto:', err);
         }
       });
-      */
     }
-  }
-
-  crearProducto() {
-    this.router.navigate(['/productos/crear']);
-  }
-
-  onPageChange(event: any) {
-    // Cuando se implemente el backend, descomentar esto
-    // this.cargarProductos();
   }
 }
