@@ -3,7 +3,7 @@ import { SideNavItems, SideNavSection } from './navigation.model';
 export const sideNavSections: SideNavSection[] = [
     {
         text: '',
-        items: ['productos', 'usuarios', 'clientes', 'creditos', 'ventas', 'facturas', 'proveedores', 'tiposPago', 'estadosVenta'],
+        items: ['productos', 'usuarios', 'clientes', 'creditos', 'ventas', 'facturas', 'tiposPago', 'estadosVenta'],
     },
 ];
 
@@ -22,11 +22,6 @@ export const sideNavItems: SideNavItems = {
         icon: 'file-alt',
         text: 'Facturas',
         link: '/dashboard/facturas',
-    },
-    proveedores: {
-        icon: 'truck',
-        text: 'Proveedores',
-        link: '/proveedores',
     },
     usuarios: {
         icon: 'users',

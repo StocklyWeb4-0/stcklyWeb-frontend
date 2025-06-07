@@ -9,7 +9,6 @@ import { faSearch, faBars, faTachometerAlt, faColumns, faBookOpen, faChartArea, 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { RegistroComponent } from './registro/registro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductosComponent } from './productos/productos.component';
 import { UsuariosListComponent } from './usuarios/usuarios-list/usuarios-list.component';
@@ -42,9 +41,6 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistroComponent,
-    // DashboardComponent,
-    // ProductosComponent,  // Eliminado para evitar declaración duplicada
     UsuariosListComponent,
     UsuarioFormComponent,
     ClientesListComponent,

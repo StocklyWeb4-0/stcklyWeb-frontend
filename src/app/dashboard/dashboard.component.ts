@@ -27,10 +27,10 @@ export class DashboardComponent implements OnInit {
       action: { label: 'Ver Ventas', link: '/venta' }
     },
     {
-      title: 'Ganancias',
-      description: 'Visualiza las ganancias totales',
+      title: 'Facturas',
+      description: 'Consulta y gestiona las facturas',
       value: '—',
-      action: null
+      action: { label: 'Ver Facturas', link: '/dashboard/facturas' }
     }
   ];
 
@@ -68,10 +68,10 @@ export class DashboardComponent implements OnInit {
           action: { label: 'Ver Ventas', link: '/venta' }
         },
         {
-          title: 'Ganancias',
-          description: 'Visualiza las ganancias totales',
-          value: resumen.ganancias ?? '—',
-          action: null
+          title: 'Facturas',
+          description: 'Consulta y gestiona las facturas',
+          value: resumen.facturas ?? '—',
+          action: { label: 'Ver Facturas', link: '/dashboard/facturas' }
         }
       ];
     });
