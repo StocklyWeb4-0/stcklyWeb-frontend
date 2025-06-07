@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <h2>Lista de Clientes</h2>
+  <button class="btn btn-primary mb-3" (click)="crearCliente()">Crear Cliente</button>
+  <mat-form-field appearance="fill" class="mb-3 ms-3">
+    <mat-label>Filtrar</mat-label>
+    <input matInput (keyup)="aplicarFiltro($event)" placeholder="Filtrar clientes" />
+  </mat-form-field>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.name }}</td>
+    </ng-container>
+
+    <!-- Identificación Column -->
+    <ng-container matColumnDef="identification">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Identificación</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.identification }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.email }}</td>
+    </ng-container>
+
+    <!-- Acciones Column -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let cliente">
+        <button mat-icon-button color="primary" (click)="editarCliente(cliente)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminarCliente(cliente)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

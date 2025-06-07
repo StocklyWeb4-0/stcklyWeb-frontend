@@ -3,7 +3,7 @@ import { SideNavItems, SideNavSection } from './navigation.model';
 export const sideNavSections: SideNavSection[] = [
     {
         text: '',
-        items: ['productos', 'usuarios', 'ventas', 'reportes', 'proveedores'],
+        items: ['productos', 'usuarios', 'clientes', 'ventas', 'reportes', 'proveedores'],
     },
 ];
 
@@ -32,5 +32,10 @@ export const sideNavItems: SideNavItems = {
         icon: 'users',
         text: 'Usuarios',
         link: '/usuarios',
+    },
+    clientes: {
+        icon: 'users',
+        text: 'Clientes',
+        link: '/clientes',
     },
 };

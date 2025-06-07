@@ -7,6 +7,8 @@ import { ProductosComponent } from './productos/productos.component';
 import { VentaComponent } from './components/venta/venta.component';
 import { UsuariosListComponent } from './usuarios/usuarios-list/usuarios-list.component';
 import { UsuarioFormComponent } from './usuarios/usuario-form/usuario-form.component';
+import { ClientesListComponent } from './clientes/clientes-list/clientes-list.component';
+import { ClienteFormComponent } from './clientes/cliente-form/cliente-form.component';
 import { authGuard } from './core/guards/auth.guard';
 import { LayoutDashboardComponent } from './layout/layout-dashboard.component';
 import { ListaProductosComponent } from './productos/lista-productos/lista-productos.component';
@@ -30,6 +32,9 @@ const routes: Routes = [
       { path: 'usuarios', component: UsuariosListComponent },
       { path: 'usuarios/crear', component: UsuarioFormComponent },
       { path: 'usuarios/editar/:id', component: UsuarioFormComponent },
+      { path: 'clientes', component: ClientesListComponent },
+      { path: 'clientes/crear', component: ClienteFormComponent },
+      { path: 'clientes/editar/:id', component: ClienteFormComponent },
     ]
   },
   { path: '**', redirectTo: '/login' }

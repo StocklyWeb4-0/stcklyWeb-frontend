@@ -17,6 +17,8 @@ import { UsuarioFormComponent } from './usuarios/usuario-form/usuario-form.compo
 import { VentaComponent } from './components/venta/venta.component'; // ⬅️ Añadido
 import { VentaFinalizadaComponent } from './components/venta-finalizada/venta-finalizada.component'; // ⬅️ Añadido
 import { LayoutModule } from './layout/layout.module';
+import { ClientesListComponent } from './clientes/clientes-list/clientes-list.component';
+import { ClienteFormComponent } from './clientes/cliente-form/cliente-form.component';
 
 // Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -45,6 +47,8 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     // ProductosComponent,  // Eliminado para evitar declaración duplicada
     UsuariosListComponent,
     UsuarioFormComponent,
+    ClientesListComponent,
+    ClienteFormComponent,
     VentaComponent, // ⬅️ Aquí
     VentaFinalizadaComponent, ConfirmDialogComponent // ⬅️ Aquí
   ],

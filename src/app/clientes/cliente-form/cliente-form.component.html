@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Editar Cliente' : 'Crear Cliente' }}</h2>
+  <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input id="name" type="text" class="form-control" formControlName="name" />
+      <div *ngIf="clienteForm.get('name')?.invalid && clienteForm.get('name')?.touched" class="text-danger">
+        El nombre es obligatorio.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="identification" class="form-label">Identificación</label>
+      <input id="identification" type="text" class="form-control" formControlName="identification" />
+      <div *ngIf="clienteForm.get('identification')?.invalid && clienteForm.get('identification')?.touched" class="text-danger">
+        La identificación es obligatoria.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input id="email" type="email" class="form-control" formControlName="email" />
+      <div *ngIf="clienteForm.get('email')?.invalid && clienteForm.get('email')?.touched" class="text-danger">
+        Email inválido.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="phone" class="form-label">Teléfono</label>
+      <input id="phone" type="text" class="form-control" formControlName="phone" />
+    </div>
+
+    <div class="mb-3">
+      <label for="address" class="form-label">Dirección</label>
+      <input id="address" type="text" class="form-control" formControlName="address" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="clienteForm.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">Cancelar</button>
+  </form>
+</div>
