@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductoService } from '../../core/services/producto.service';
 import { EditarProductoComponent } from '../editar-producto/editar-producto.component';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-lista-productos',
@@ -123,23 +124,32 @@ export class ListaProductosComponent implements OnInit, AfterViewInit {
   }
 
   eliminarProducto(id: string) {
-    if (confirm('¿Está seguro de que desea eliminar este producto?')) {
-      this.productoService.eliminarProducto(Number(id)).subscribe({
-        next: () => {
-          this.cargarProductos();
-          this.snackBar.open('Producto eliminado con éxito', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-        },
-        error: (err) => {
-          this.snackBar.open('Error al eliminar el producto', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-          console.error('Error al eliminar producto:', err);
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Eliminar Producto',
+        message: '¿Estás seguro? Esta acción no se puede deshacer.'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.productoService.eliminarProducto(Number(id)).subscribe({
+          next: () => {
+            this.cargarProductos();
+            this.snackBar.open('Producto eliminado con éxito', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+          },
+          error: (err) => {
+            this.snackBar.open('Error al eliminar el producto', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+            console.error('Error al eliminar producto:', err);
+          }
+        });
+      }
+    });
   }
 }

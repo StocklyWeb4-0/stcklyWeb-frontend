@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-usuarios-list',
@@ -21,7 +23,8 @@ export class UsuariosListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -52,18 +55,30 @@ export class UsuariosListComponent implements OnInit {
   }
 
   eliminarUsuario(usuario: any): void {
-    const confirmado = confirm(`¿Estás seguro de eliminar a ${usuario.nombre}?`);
-    if (confirmado) {
-      this.userService.eliminarUsuario(usuario.id).subscribe({
-        next: () => {
-          this.snackBar.open('Usuario eliminado con éxito', 'Cerrar', { duration: 3000 });
-          this.cargarUsuarios();
-        },
-        error: (err) => {
-          console.error('Error al eliminar usuario:', err);
-          this.snackBar.open('Error al eliminar usuario', 'Cerrar', { duration: 3000 });
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Eliminar Usuario',
+        message: `¿Estás seguro? Esta acción no se puede deshacer.`
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.eliminarUsuario(usuario.id).subscribe({
+          next: () => {
+            this.snackBar.open('Usuario eliminado con éxito', 'Cerrar', { duration: 3000 });
+            this.cargarUsuarios();
+          },
+          error: (err) => {
+            console.error('Error al eliminar usuario:', err);
+            this.snackBar.open('Error al eliminar usuario', 'Cerrar', { duration: 3000 });
+          }
+        });
+      }
+    });
+  }
+
+  crearUsuario(): void {
+    this.router.navigate(['/usuarios/crear']);
   }
 }

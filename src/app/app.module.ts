@@ -31,8 +31,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     UsuariosListComponent,
     UsuarioFormComponent,
     VentaComponent, // ⬅️ Aquí
-    VentaFinalizadaComponent // ⬅️ Aquí
+    VentaFinalizadaComponent, ConfirmDialogComponent // ⬅️ Aquí
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     MatSnackBarModule,
     MatCardModule,
     LayoutModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
