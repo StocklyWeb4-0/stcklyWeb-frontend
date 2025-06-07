@@ -8,8 +8,8 @@ describe('AuthService integración real', () => {
   let service: AuthService;
   let http: HttpClient;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [AuthService]
     });

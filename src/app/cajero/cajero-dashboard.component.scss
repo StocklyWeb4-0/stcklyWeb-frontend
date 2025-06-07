@@ -1,0 +1,53 @@
+.dashboard-container {
+  padding: 2rem;
+}
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+.dashboard-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.dashboard-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+  min-width: 220px;
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.dashboard-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.dashboard-card-desc {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+.dashboard-card-action {
+  margin-top: auto;
+}
+.dashboard-section-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.dashboard-table {
+  margin-top: 1rem;
+}
+.empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #888;
+  margin-top: 1rem;
+} 

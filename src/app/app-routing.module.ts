@@ -33,10 +33,14 @@ const routes: Routes = [
       { path: 'usuarios', component: UsuariosListComponent },
       { path: 'usuarios/crear', component: UsuarioFormComponent },
       { path: 'usuarios/editar/:id', component: UsuarioFormComponent },
+<<<<<<< HEAD
       { path: 'clientes', component: ClientesListComponent },
       { path: 'clientes/crear', component: ClienteFormComponent },
       { path: 'clientes/editar/:id', component: ClienteFormComponent },
       { path: 'creditos', loadChildren: () => import('./creditos/creditos.module').then(m => m.CreditosModule) }
+=======
+      { path: 'cajero', loadChildren: () => import('./cajero/cajero-dashboard.module').then(m => m.CajeroDashboardModule) },
+>>>>>>> 13a8ba0 (implementacion de endpoints)
     ]
   },
   { path: '**', redirectTo: '/login' }

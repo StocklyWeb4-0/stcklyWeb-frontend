@@ -1,0 +1,77 @@
+<div class="dashboard-list-container">
+  <h2>Clientes</h2>
+  <button mat-raised-button color="primary" (click)="mostrarFormularioCrear()" *ngIf="!showForm">Crear Cliente</button>
+
+  <form *ngIf="showForm" [formGroup]="clienteForm" (ngSubmit)="guardarCliente()" style="margin-bottom: 24px; background: #f5f5f5; padding: 20px; border-radius: 8px;">
+    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+      <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 200px;">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="clienteForm.get('name')?.hasError('required')">El nombre es obligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 200px;">
+        <mat-label>Identificación</mat-label>
+        <input matInput formControlName="identification" required>
+        <mat-error *ngIf="clienteForm.get('identification')?.hasError('required')">La identificación es obligatoria</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 200px;">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="phone" required>
+        <mat-error *ngIf="clienteForm.get('phone')?.hasError('required')">El teléfono es obligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 200px;">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex: 2 1 300px; min-width: 200px;">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="address" required>
+        <mat-error *ngIf="clienteForm.get('address')?.hasError('required')">La dirección es obligatoria</mat-error>
+      </mat-form-field>
+    </div>
+    <div style="margin-top: 16px; display: flex; gap: 12px;">
+      <button mat-raised-button color="primary" type="submit" [disabled]="clienteForm.invalid">{{ editMode ? 'Actualizar' : 'Crear' }}</button>
+      <button mat-button type="button" (click)="cancelarFormulario()">Cancelar</button>
+    </div>
+  </form>
+
+  <table mat-table [dataSource]="clientes" class="mat-elevation-z8" *ngIf="clientes.length">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.email }}</td>
+    </ng-container>
+    <ng-container matColumnDef="identification">
+      <th mat-header-cell *matHeaderCellDef>Identificación</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.identification }}</td>
+    </ng-container>
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.phone }}</td>
+    </ng-container>
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Dirección</th>
+      <td mat-cell *matCellDef="let cliente">{{ cliente.address }}</td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let cliente">
+        <button mat-icon-button color="accent" (click)="mostrarFormularioEditar(cliente)"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="eliminarCliente(cliente.id)"><mat-icon>delete</mat-icon></button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div *ngIf="!clientes.length && !loading" class="empty-message">
+    No hay clientes registrados.
+  </div>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div> 

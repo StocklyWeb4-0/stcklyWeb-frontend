@@ -1,0 +1,108 @@
+<div class="dashboard-container">
+  <h2 class="dashboard-title">Dashboard de Cajero</h2>
+  <div class="dashboard-cards-row">
+    <div *ngFor="let card of cards" class="dashboard-card">
+      <div class="dashboard-card-title">{{ card.title }}</div>
+      <div class="dashboard-card-desc">{{ card.description }}</div>
+      <div class="dashboard-card-action" *ngIf="card.action">
+        <button mat-stroked-button color="primary" [routerLink]="card.action.link">{{ card.action.label }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="flex: 1 1 auto; width: 100%;">
+    <div class="col-lg-8 mb-4 d-flex" style="min-width: 300px;">
+      <div class="card shadow mb-4 h-100 flex-fill">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Ventas por Mes</h6>
+        </div>
+        <div class="card-body">
+          <div class="dashboard-section">
+            <div class="dashboard-section-title">Ventas por Mes</div>
+            <div class="dashboard-chart">
+              <ng-container *ngIf="ventasChartData; else loadingVentas">
+                <app-dashboard-chart [title]="'Ventas por Mes'" [chartData]="ventasChartData"></app-dashboard-chart>
+              </ng-container>
+              <ng-template #loadingVentas>
+                <div class="loading">Cargando ventas...</div>
+                <div class="empty-message">
+                  <mat-icon style="font-size: 2.5rem; color: var(--primary);">bar_chart</mat-icon>
+                  <span>Aún no se han registrado ventas este mes.</span>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4 d-flex" style="min-width: 250px;">
+      <div class="card shadow mb-4 h-100 flex-fill">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Últimos Créditos</h6>
+        </div>
+        <div class="card-body">
+          <div class="dashboard-section">
+            <div class="dashboard-section-title">Créditos recientes</div>
+            <div class="dashboard-table">
+              <table mat-table [dataSource]="creditosTableData" class="mat-elevation-z8" *ngIf="creditosTableData && creditosTableData.length; else emptyCreditos">
+                <ng-container matColumnDef="cliente">
+                  <th mat-header-cell *matHeaderCellDef>Cliente</th>
+                  <td mat-cell *matCellDef="let credito">{{ credito.cliente }}</td>
+                </ng-container>
+                <ng-container matColumnDef="monto">
+                  <th mat-header-cell *matHeaderCellDef>Monto</th>
+                  <td mat-cell *matCellDef="let credito">{{ credito.monto }}</td>
+                </ng-container>
+                <ng-container matColumnDef="estado">
+                  <th mat-header-cell *matHeaderCellDef>Estado</th>
+                  <td mat-cell *matCellDef="let credito">{{ credito.estado }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="['cliente','monto','estado']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['cliente','monto','estado'];"></tr>
+              </table>
+              <ng-template #emptyCreditos>
+                <div class="empty-message">
+                  <mat-icon style="font-size: 2.5rem; color: var(--secondary);">credit_card</mat-icon>
+                  <span>No hay créditos recientes.</span>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="flex: 1 1 auto; width: 100%;">
+    <div class="col-lg-12 mb-4 d-flex" style="min-width: 300px;">
+      <div class="card shadow mb-4 h-100 flex-fill">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Últimos Clientes</h6>
+        </div>
+        <div class="card-body">
+          <div class="dashboard-section">
+            <div class="dashboard-section-title">Clientes recientes</div>
+            <div class="dashboard-table">
+              <table mat-table [dataSource]="clientesTableData" class="mat-elevation-z8" *ngIf="clientesTableData && clientesTableData.length; else emptyClientes">
+                <ng-container matColumnDef="nombre">
+                  <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                  <td mat-cell *matCellDef="let cliente">{{ cliente.nombre }}</td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let cliente">{{ cliente.email }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="['nombre','email']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['nombre','email'];"></tr>
+              </table>
+              <ng-template #emptyClientes>
+                <div class="empty-message">
+                  <mat-icon style="font-size: 2.5rem; color: var(--secondary);">person_off</mat-icon>
+                  <span>No hay clientes registrados aún.</span>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

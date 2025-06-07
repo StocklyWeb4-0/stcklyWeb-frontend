@@ -7,11 +7,24 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class FacturaService {
-  private apiUrl = `${environment.apiUrl}/facturas`; // ✅ Usar backticks correctamente
+  private apiUrl = `${environment.apiUrl}/invoices`;
 
   constructor(private http: HttpClient) {}
 
-  enviarFacturaPorCorreo(idVenta: number, email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/enviar-correo`, { idVenta, email }); // ✅ Usar backticks aquí también
+  getFacturas(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  descargarFactura(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/download`, { responseType: 'blob' });
+  }
+
+  enviarFactura(id: number, email?: string, isNonCreditClient?: boolean): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/send-invoice`, { email, isNonCreditClient });
+  }
+
+  // Método para compatibilidad con componentes antiguos
+  enviarFacturaPorCorreo(id: number, email: string) {
+    return this.enviarFactura(id, email);
   }
 }

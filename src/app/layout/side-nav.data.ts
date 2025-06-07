@@ -3,7 +3,7 @@ import { SideNavItems, SideNavSection } from './navigation.model';
 export const sideNavSections: SideNavSection[] = [
     {
         text: '',
-    items: ['productos', 'usuarios', 'clientes', 'creditos', 'ventas', 'reportes', 'proveedores'],
+        items: ['productos', 'usuarios', 'clientes', 'creditos', 'ventas', 'facturas', 'proveedores', 'tiposPago', 'estadosVenta'],
     },
 ];
 
@@ -18,10 +18,10 @@ export const sideNavItems: SideNavItems = {
         text: 'Ventas',
         link: '/venta',
     },
-    reportes: {
+    facturas: {
         icon: 'file-alt',
-        text: 'Reportes',
-        link: '/reportes',
+        text: 'Facturas',
+        link: '/dashboard/facturas',
     },
     proveedores: {
         icon: 'truck',
@@ -34,13 +34,23 @@ export const sideNavItems: SideNavItems = {
         link: '/usuarios',
     },
     clientes: {
-        icon: 'users',
+        icon: 'user-friends',
         text: 'Clientes',
-        link: '/clientes',
+        link: '/dashboard/clientes',
     },
     creditos: {
         icon: 'money-bill-wave',
         text: 'Créditos',
         link: '/creditos',
+    },
+    tiposPago: {
+        icon: 'credit-card',
+        text: 'Tipos de Pago',
+        link: '/dashboard/tipos-pago',
+    },
+    estadosVenta: {
+        icon: 'clipboard-check',
+        text: 'Estados de Venta',
+        link: '/dashboard/estados-venta',
     },
 };

@@ -1,0 +1,27 @@
+<div class="dashboard-list-container">
+  <h2>Tipos de Pago</h2>
+  <button mat-raised-button color="primary" (click)="crearTipoPago()">Crear Tipo de Pago</button>
+  <table mat-table [dataSource]="paymentTypes" class="mat-elevation-z8" *ngIf="paymentTypes.length">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let tipo">{{ tipo.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let tipo">{{ tipo.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let tipo">
+        <button mat-icon-button color="accent" (click)="editarTipoPago(tipo.id)"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="eliminarTipoPago(tipo.id)"><mat-icon>delete</mat-icon></button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div *ngIf="!paymentTypes.length && !loading" class="empty-message">
+    No hay tipos de pago registrados.
+  </div>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div> 

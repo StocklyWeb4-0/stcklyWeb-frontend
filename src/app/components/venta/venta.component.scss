@@ -1,0 +1,36 @@
+.venta-form-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 24px;
+  margin: 32px auto;
+  max-width: 800px;
+}
+
+.venta-form-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1976d2;
+}
+
+mat-form-field {
+  margin-right: 12px;
+}
+
+button[mat-stroked-button], button[mat-raised-button] {
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .venta-form-container {
+    padding: 8px;
+  }
+  mat-form-field {
+    width: 100% !important;
+    margin-right: 0;
+  }
+  .venta-form-container h2 {
+    font-size: 1.3rem;
+  }
+}

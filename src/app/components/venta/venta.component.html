@@ -1,10 +1,85 @@
-<div *ngIf="!ventaFinalizada">
-    <h3>Carrito de venta (simulado)</h3>
-    <!-- Aquí podrías incluir productos, cantidades, etc -->
-    <button class="btn btn-primary" (click)="finalizarVenta()">Finalizar Venta</button>
+<div class="venta-form-container" style="max-width: 800px; margin: auto; padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+  <h2>Registrar Venta</h2>
+  <form [formGroup]="ventaForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="productos">
+      <div *ngFor="let prod of productosFormArray.controls; let i = index" [formGroupName]="i" style="display: flex; gap: 16px; align-items: center; margin-bottom: 12px;">
+        <mat-form-field appearance="outline" style="flex: 2;">
+          <mat-label>Producto</mat-label>
+          <mat-select formControlName="code" required>
+            <mat-option *ngFor="let producto of productos" [value]="producto.code">
+              {{ producto.name }} ({{ producto.code }}) - ${{ producto.price }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 120px;">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" formControlName="quantity" min="1">
+        </mat-form-field>
+        <button mat-icon-button color="warn" type="button" (click)="eliminarProducto(i)" *ngIf="productosFormArray.length > 1">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <button mat-stroked-button color="primary" type="button" (click)="agregarProducto()" style="margin-bottom: 16px;">
+        <mat-icon>add</mat-icon> Agregar Producto
+      </button>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Tipo de Pago</mat-label>
+      <mat-select formControlName="paymentType" required>
+        <mat-option *ngFor="let tipo of paymentTypes" [value]="tipo.id">{{ tipo.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+      <mat-label>Estado de Venta</mat-label>
+      <mat-select formControlName="saleStatusId" required>
+        <mat-option *ngFor="let status of saleStatuses" [value]="status.id">{{ status.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="customerId">
+          <mat-option [value]="null">Sin cliente registrado</mat-option>
+          <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.name }} ({{ cliente.email }})</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Email (si no hay cliente)</mat-label>
+        <input matInput formControlName="customerEmail" placeholder="cliente@email.com">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 200px; margin-bottom: 16px;">
+      <mat-label>Número de cuotas (si es crédito)</mat-label>
+      <input matInput type="number" formControlName="totalPayments" min="1">
+      <mat-error *ngIf="mostrarErrorCuotas()">
+        El número de cuotas es obligatorio para crédito
+      </mat-error>
+    </mat-form-field>
+
+    <div style="margin-bottom: 16px; font-size: 1.2rem; font-weight: 500;">
+      Total: <span style="color: #1976d2;">${{ calcularTotal() }}</span>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="enviando || ventaForm.invalid">
+      <mat-icon>shopping_cart_checkout</mat-icon> Registrar Venta
+    </button>
+  </form>
+
+  <div *ngIf="resumenVenta" style="margin-top: 32px;">
+    <h3>Venta registrada</h3>
+    <p><strong>ID Venta:</strong> {{ resumenVenta.id }}</p>
+    <p><strong>Total:</strong> {{ resumenVenta.total | currency }}</p>
+    <p><strong>Productos:</strong></p>
+    <ul>
+      <li *ngFor="let item of resumenVenta.details">
+        {{ item.product.name }} - {{ item.quantity }} x {{ item.unitPrice | currency }}
+      </li>
+    </ul>
+    <p *ngIf="resumenVenta.customerEmail"><strong>Email cliente:</strong> {{ resumenVenta.customerEmail }}</p>
   </div>
-  
-  <div *ngIf="ventaFinalizada">
-    <app-venta-finalizada [resumenVenta]="resumenVenta"></app-venta-finalizada>
-  </div>
+</div>
   

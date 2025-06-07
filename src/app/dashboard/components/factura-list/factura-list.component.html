@@ -1,0 +1,38 @@
+<div class="dashboard-list-container">
+  <h2>Facturas</h2>
+  <table mat-table [dataSource]="facturas" class="mat-elevation-z8" *ngIf="facturas.length">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let factura">{{ factura.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="venta">
+      <th mat-header-cell *matHeaderCellDef>Venta</th>
+      <td mat-cell *matCellDef="let factura">{{ factura.sale?.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let factura">{{ factura.createdAt | date:'short' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="cliente">
+      <th mat-header-cell *matHeaderCellDef>Cliente</th>
+      <td mat-cell *matCellDef="let factura">{{ factura.sale?.customer?.name || '-' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>Total</th>
+      <td mat-cell *matCellDef="let factura">${{ factura.sale?.total || '-' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let factura">
+        <button mat-icon-button color="primary" (click)="descargarFactura(factura.id)"><mat-icon>download</mat-icon></button>
+        <button mat-icon-button color="accent" (click)="enviarFactura(factura.id)"><mat-icon>email</mat-icon></button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div *ngIf="!facturas.length && !loading" class="empty-message">
+    No hay facturas registradas.
+  </div>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div> 

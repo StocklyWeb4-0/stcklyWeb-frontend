@@ -42,10 +42,29 @@ togglePasswordVisibility(): void {
 
     this.authService.login({ correo, contrasena }).subscribe({
       next: (response) => {
-        console.log('Login exitoso', response);
+        if (response && response.access_token) {
+          this.authService.storeToken(response.access_token);
+          // Log del token recibido
+          console.log('Token JWT recibido:', response.access_token);
+          // Decodifica el payload y lo muestra
+          try {
+            const payload = JSON.parse(atob(response.access_token.split('.')[1]));
+            console.log('Payload decodificado del token:', payload);
+          } catch (e) {
+            console.error('Error al decodificar el token:', e);
+          }
+          setTimeout(() => {
+            const user = this.authService.getCurrentUser();
+            console.log('Usuario decodificado tras login:', user);
+            if (user && user.roles && user.roles.includes('cajero')) {
+              window.location.href = '/cajero';
+            } else {
+              this.router.navigate(['/dashboard']);
+            }
+          }, 100);
+        }
         const nombreUsuario = correo.split('@')[0];
         this.snackBar.open(`Bienvenido a StocklyWeb ${nombreUsuario}`, 'Cerrar', { duration: 3000 });
-        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         console.error('Error de inicio de sesión:', error);

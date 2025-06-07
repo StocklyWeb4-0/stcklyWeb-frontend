@@ -6,11 +6,24 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  let token = authService.getToken();
+  console.log('Token en authGuard:', token);
+
+  if (token) {
     return true;
   } else {
-    // Redirige a la página de login si no está autenticado
-    router.navigate(['/login']);
-    return false;
+    // Espera breve y vuelve a intentar para evitar problemas de sincronización tras login
+    return new Promise<boolean>(resolve => {
+      setTimeout(() => {
+        token = authService.getToken();
+        console.log('Reintento de token en authGuard:', token);
+        if (token) {
+          resolve(true);
+        } else {
+          router.navigate(['/login']);
+          resolve(false);
+        }
+      }, 150);
+    });
   }
 };

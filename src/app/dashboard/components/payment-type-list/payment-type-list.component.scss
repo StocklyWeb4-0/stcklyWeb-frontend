@@ -1,0 +1,27 @@
+.dashboard-list-container {
+  width: 100%;
+  margin-top: 32px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  min-height: 300px;
+  position: relative;
+  z-index: 2;
+}
+
+h2 {
+  margin-bottom: 16px;
+  color: #222;
+  font-weight: 700;
+  text-align: left;
+}
+
+button[mat-raised-button] {
+  margin-bottom: 16px;
+}
+
+.mat-table {
+  width: 100%;
+  background: #fff;
+} 
